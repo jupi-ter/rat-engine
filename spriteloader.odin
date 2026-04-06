@@ -24,6 +24,13 @@ load_sprite_manifest :: proc(lib: ^SpriteLibrary, manifest_path: string) -> bool
 		fmt.eprintln("JSON Error:", err)
 		return false
 	}
+
+	//defer {
+	//	for e in entries {
+	//			delete(e.name)
+	//			delete(e.path)
+	//		}
+	//	}
 	defer delete(entries)
 
 	for entry in entries {

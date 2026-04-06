@@ -4,6 +4,8 @@ import "core:fmt"
 import "core:mem"
 import "core:slice"
 
+// # the asserts in this file are particularly lazy and should be fixed.
+
 SparseSet :: struct($T: typeid) {
 	sparse: []i32,
 	dense:  []i32,
@@ -25,7 +27,8 @@ create_sparse_set :: proc($T: typeid, max: i32) -> SparseSet(T) {
 }
 
 add :: proc(set: ^SparseSet($T), eid: i32, value: T) {
-	if int(set.count) >= len(set.dense) do return
+	oob := int(set.count) >= len(set.dense) || (int(eid) < len(set.sparse))
+	assert(oob, "Out of bounds indexing.")
 
 	set.sparse[eid] = set.count
 	set.dense[set.count] = eid
@@ -34,6 +37,9 @@ add :: proc(set: ^SparseSet($T), eid: i32, value: T) {
 }
 
 remove :: proc(set: ^SparseSet($T), eid: i32) {
+	oob := int(set.count) >= len(set.dense) || (int(eid) < len(set.sparse))
+	assert(oob, "Out of bounds indexing.")
+
 	idx := set.sparse[eid]
 	if idx == -1 do return
 
@@ -53,6 +59,9 @@ remove :: proc(set: ^SparseSet($T), eid: i32) {
 }
 
 get :: proc(set: ^SparseSet($T), eid: i32) -> (T, bool) {
+	oob := int(set.count) >= len(set.dense) || (int(eid) < len(set.sparse))
+	assert(oob, "Out of bounds indexing.")
+
 	idx := set.sparse[eid]
 	if idx == -1 || idx >= set.count do return {}, false
 
