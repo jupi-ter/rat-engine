@@ -9,12 +9,22 @@ Sprite :: struct {
 	path:         string,
 }
 
+ImageParamType :: enum {
+	Sprite,
+	Primitive,
+}
+
 // Temporary transfer object for the merger of sprite and renderable data.
-// Not to be used anywhere else than in the create_object API function.
+// Not to be used anywhere else than the create_object API function.
 ImageParams :: struct {
+	type:        ImageParamType,
+	// if Sprite
 	sprite_name: string,
 	image_index: i32,
 	image_speed: f32,
+	// if Primitive
+	shape:       Primitive,
+	color:       raylib.Color,
 }
 
 get_sprite :: proc(lib: ^SpriteLibrary, name: string) -> ^Sprite {

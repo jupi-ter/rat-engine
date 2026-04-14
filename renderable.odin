@@ -9,7 +9,8 @@ Renderable :: struct {
 	image_speed:   f32,
 }
 
-render_system :: proc(world: ^World) {
+// annoying naming i know, but most differentiate from render primitives
+render_sprites :: proc(world: ^World) {
 	for i in 0 ..< world.renderables.count {
 		eid := world.renderables.dense[i]
 		render := &world.renderables.data[i]
