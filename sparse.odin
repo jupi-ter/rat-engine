@@ -1,7 +1,5 @@
 package rat
 
-import "core:fmt"
-import "core:mem"
 import "core:slice"
 
 // FIXME: the asserts in this file are particularly lazy and should be fixed.
@@ -27,8 +25,8 @@ create_sparse_set :: proc($T: typeid, max: i32) -> SparseSet(T) {
 }
 
 add :: proc(set: ^SparseSet($T), eid: i32, value: T) {
-	oob := int(set.count) >= len(set.dense) || (int(eid) < len(set.sparse))
-	assert(oob, "Out of bounds indexing.")
+	is_valid := int(set.count) < len(set.dense) && int(eid) < len(set.sparse)
+	assert(is_valid, "SparseSet: Out of bounds or capacity reached")
 
 	set.sparse[eid] = set.count
 	set.dense[set.count] = eid
@@ -37,8 +35,7 @@ add :: proc(set: ^SparseSet($T), eid: i32, value: T) {
 }
 
 remove :: proc(set: ^SparseSet($T), eid: i32) {
-	oob := int(set.count) >= len(set.dense) || (int(eid) < len(set.sparse))
-	assert(oob, "Out of bounds indexing.")
+	assert(int(eid) < len(set.sparse), "SparseSet: ID out of Range.")
 
 	idx := set.sparse[eid]
 	if idx == -1 do return
@@ -59,8 +56,7 @@ remove :: proc(set: ^SparseSet($T), eid: i32) {
 }
 
 get :: proc(set: ^SparseSet($T), eid: i32) -> (T, bool) {
-	oob := int(set.count) >= len(set.dense) || (int(eid) < len(set.sparse))
-	assert(oob, "Out of bounds indexing.")
+	assert((int(eid) < len(set.sparse)), "Sparse Set: ID out of range.")
 
 	idx := set.sparse[eid]
 	if idx == -1 || idx >= set.count do return {}, false

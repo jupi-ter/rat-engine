@@ -39,7 +39,7 @@ render_primitive_rects :: proc(world: ^World) {
 					rect.height * transform.scale[1],
 				},
 			),
-			raylib.Vector2{0, 0}, // FIXME : hardcoded topleft
+			appearance.offset,
 			transform.rotation,
 			appearance.tint,
 		)
@@ -54,6 +54,10 @@ render_primitive_circs :: proc(world: ^World) {
 		// draw
 		transform, _ := get(&world.transforms, eid)
 		appearance, _ := get(&world.appearances, eid)
-		raylib.DrawCircleV(transform.position, circle.radius, appearance.tint)
+		raylib.DrawCircleV(
+			vec2_add(transform.position, appearance.offset),
+			circle.radius,
+			appearance.tint,
+		)
 	}
 }
