@@ -10,11 +10,6 @@ CircCollision :: struct {
 	radius: f32,
 }
 
-CollisionConfig :: union {
-	raylib.Vector2, // rect
-	f32, // circ
-}
-
 CELL_SIZE :: 32
 GRID_WIDTH :: 16
 GRID_HEIGHT :: 16

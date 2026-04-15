@@ -1,15 +1,16 @@
 package rat
 
+import "core:fmt"
 import "vendor:raylib"
 
-Primitive :: union {
-	raylib.Rectangle,
+Shape :: union {
+	[2]f32, // rectangle bounds
 	f32, // radius
 }
 
 RectangleWrapper :: struct {
-	rect:  raylib.Rectangle,
-	color: raylib.Color,
+	bounds: [2]f32,
+	color:  raylib.Color,
 }
 
 CircleWrapper :: struct {
@@ -21,15 +22,22 @@ CircleWrapper :: struct {
 
 render_primitive_rects :: proc(world: ^World) {
 	for i in 0 ..< world.primitives_rect.count {
-		eid := world.renderables.dense[i]
+		eid := world.primitives_rect.dense[i]
 		wrapper := &world.primitives_rect.data[i]
 
 		// draw
 		transform, has_transform := get(&world.transforms, eid)
 		if has_transform {
 			raylib.DrawRectanglePro(
-				wrapper.rect,
-				transform.position,
+				raylib.Rectangle(
+					{
+						transform.position.x,
+						transform.position.y,
+						wrapper.bounds[0] * transform.scale[0],
+						wrapper.bounds[1] * transform.scale[1],
+					},
+				),
+				raylib.Vector2{0, 0}, // FIXME : hardcoded topleft
 				transform.rotation,
 				wrapper.color,
 			)
@@ -39,7 +47,7 @@ render_primitive_rects :: proc(world: ^World) {
 
 render_primitive_circs :: proc(world: ^World) {
 	for i in 0 ..< world.primitives_circ.count {
-		eid := world.renderables.dense[i]
+		eid := world.primitives_circ.dense[i]
 		wrapper := &world.primitives_circ.data[i]
 
 		// draw

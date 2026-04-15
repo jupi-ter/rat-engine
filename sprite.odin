@@ -23,7 +23,7 @@ ImageParams :: struct {
 	image_index: i32,
 	image_speed: f32,
 	// if Primitive
-	shape:       Primitive,
+	shape:       Shape,
 	color:       raylib.Color,
 }
 

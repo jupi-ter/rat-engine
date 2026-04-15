@@ -15,6 +15,11 @@ render_sprites :: proc(world: ^World) {
 		eid := world.renderables.dense[i]
 		render := &world.renderables.data[i]
 
+		// FIXME: branch misfiring!
+		if (render.sprite_name == "") {
+			continue
+		}
+
 		sprite := get_sprite(&world.sprite_lib, render.sprite_name)
 
 		render.frame_counter += render.image_speed

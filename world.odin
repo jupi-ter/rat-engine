@@ -32,7 +32,7 @@ create_object :: proc(
 	world: ^World,
 	transform: transform_t,
 	image: ImageParams,
-	bbox: CollisionConfig,
+	bbox: Shape,
 ) -> Entity {
 	eid, ok := entity_create(&world.entity_manager)
 	assert(ok, "Failed to create entity, EntityManager is out of capacity.")
@@ -52,12 +52,8 @@ create_object :: proc(
 		)
 	} else {
 		switch val in image.shape {
-		case raylib.Rectangle:
-			add(
-				&world.primitives_rect,
-				eid,
-				RectangleWrapper{rect = raylib.Rectangle(val), color = image.color},
-			)
+		case [2]f32:
+			add(&world.primitives_rect, eid, RectangleWrapper{bounds = val, color = image.color})
 		case f32:
 			add(&world.primitives_circ, eid, CircleWrapper{radius = f32(val), color = image.color})
 
@@ -65,12 +61,8 @@ create_object :: proc(
 	}
 
 	switch val in bbox {
-	case raylib.Vector2:
-		add(
-			&world.colliders_aabb,
-			eid,
-			RectCollision{width = raylib.Vector2(val).x, height = raylib.Vector2(val).y},
-		)
+	case [2]f32:
+		add(&world.colliders_aabb, eid, RectCollision{width = val[0], height = val[1]})
 		break
 	case f32:
 		add(&world.colliders_circ, eid, CircCollision{radius = val})

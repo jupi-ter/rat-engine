@@ -4,7 +4,7 @@ import "core:fmt"
 import "core:mem"
 import "core:slice"
 
-// # the asserts in this file are particularly lazy and should be fixed.
+// FIXME: the asserts in this file are particularly lazy and should be fixed.
 
 SparseSet :: struct($T: typeid) {
 	sparse: []i32,

@@ -12,10 +12,17 @@ main :: proc() {
 
 	// create here
 	create_object(
-		&world,
+		&world, // Using world pos as the rotatio
 		transform_t{position = {256, 256}, scale = {4, 4}, rotation = 0},
-		ImageParams{sprite_name = "rat", image_index = 0, image_speed = 0.1},
+		ImageParams{type = .Sprite, sprite_name = "rat", image_index = 0, image_speed = 0.1},
 		raylib.Vector2{32, 32},
+	)
+
+	create_object(
+		&world,
+		transform_t{position = {20, 20}, scale = {1, 1}, rotation = 0},
+		ImageParams{type = .Primitive, shape = [2]f32{20, 20}, color = raylib.RED},
+		raylib.Vector2{20, 20},
 	)
 	// end creation
 
