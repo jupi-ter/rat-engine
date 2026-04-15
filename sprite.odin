@@ -14,7 +14,7 @@ ImageParamType :: enum {
 	Primitive,
 }
 
-// Temporary transfer object for the merger of sprite and renderable data.
+// Temporary transfer object for the merger of sprite and sprite_data.ble data.
 // Not to be used anywhere else than the create_object API function.
 ImageParams :: struct {
 	type:        ImageParamType,
@@ -24,7 +24,9 @@ ImageParams :: struct {
 	image_speed: f32,
 	// if Primitive
 	shape:       Shape,
+	// general
 	color:       raylib.Color,
+	offset:      [2]f32,
 }
 
 get_sprite :: proc(lib: ^SpriteLibrary, name: string) -> ^Sprite {
@@ -49,4 +51,38 @@ get_sprite :: proc(lib: ^SpriteLibrary, name: string) -> ^Sprite {
 	}
 
 	return spr
+}
+
+render_sprites :: proc(world: ^World) {
+	for i in 0 ..< world.sprite_data.count {
+		eid := world.sprite_data.dense[i]
+		sprite_data := &world.sprite_data.data[i]
+
+		appearance, _ := get(&world.appearances, eid)
+		transform, _ := get(&world.transforms, eid)
+
+		// solution for branch misfiring: default primitive renderables as "null" sprite, a transparent 1x1 sprite to avoid branching.
+		// must hard code it in spritelib at engine level.
+		sprite := get_sprite(&world.sprite_lib, sprite_data.sprite_name)
+
+		sprite_data.frame_counter += sprite_data.image_speed
+		//update animation
+		if (sprite_data.frame_counter >= 1.0) {
+			sprite_data.frame_counter -= 1.0
+			sprite_data.image_index += 1
+
+			if (sprite_data.image_index >= sprite.total_frames) {
+				sprite_data.image_index = 0
+			}
+		}
+
+		// draw
+		raylib.DrawTextureEx(
+			sprite.frames[sprite_data.image_index],
+			vec2_add(transform.position, appearance.offset),
+			transform.rotation,
+			transform.scale.x, // FIXME: use scale vector properly
+			raylib.WHITE,
+		)
+	}
 }

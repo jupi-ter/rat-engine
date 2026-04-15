@@ -2,14 +2,6 @@ package rat
 
 import "vendor:raylib"
 
-RectCollision :: struct {
-	width, height: f32,
-}
-
-CircCollision :: struct {
-	radius: f32,
-}
-
 CELL_SIZE :: 32
 GRID_WIDTH :: 16
 GRID_HEIGHT :: 16

@@ -36,7 +36,11 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	6.2.1	/v6.2.1/
-0	assets/sprites.json	/^    { "name": "rat", "path": "rat",  "frames": 2 }$/;"	o
-frames	assets/sprites.json	/^    { "name": "rat", "path": "rat",  "frames": 2 }$/;"	n	object:0
-name	assets/sprites.json	/^    { "name": "rat", "path": "rat",  "frames": 2 }$/;"	s	object:0
-path	assets/sprites.json	/^    { "name": "rat", "path": "rat",  "frames": 2 }$/;"	s	object:0
+0	assets/sprites.json	/^    {"name": "null", "path": "null", "frames": 1},$/;"	o
+1	assets/sprites.json	/^    { "name": "rat", "path": "rat",  "frames": 2 }$/;"	o
+frames	assets/sprites.json	/^    { "name": "rat", "path": "rat",  "frames": 2 }$/;"	n	object:1
+frames	assets/sprites.json	/^    {"name": "null", "path": "null", "frames": 1},$/;"	n	object:0
+name	assets/sprites.json	/^    { "name": "rat", "path": "rat",  "frames": 2 }$/;"	s	object:1
+name	assets/sprites.json	/^    {"name": "null", "path": "null", "frames": 1},$/;"	s	object:0
+path	assets/sprites.json	/^    { "name": "rat", "path": "rat",  "frames": 2 }$/;"	s	object:1
+path	assets/sprites.json	/^    {"name": "null", "path": "null", "frames": 1},$/;"	s	object:0
